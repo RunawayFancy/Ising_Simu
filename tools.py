@@ -2,29 +2,20 @@ import numpy as np
 import math as m
 
 def grid_difference(grid_1, grid_2):
-    grid_d = []
-    N = len(grid_1)
-    for i in range(N):
-        grid_d.append([])
-        for j in range(N):
-            if grid_1[i][j] == grid_2[i][j]:
-                grid_d[i].append(-1)
-            else:
-                grid_d[i].append(1)
+    grid_1 = np.array(grid_1)
+    grid_2 = np.array(grid_2)
+    grid_d = np.where(grid_1 == grid_2, -1, 1)
     return grid_d
 
 
 def magnetization(grid):
-    N_up = 0
-    N_down = 0
-    for i in range(len(grid)):
-        for j in range(len(grid)):
-            if grid[i][j] > 0:
-                N_up += 1
-            else:
-                N_down += 1
-    M = (N_up - N_down)/len(grid)**2
-
+    """
+    Use np array to speed up the calculation
+    """
+    grid = np.array(grid)
+    N_up = np.sum(grid > 0)
+    N_down = np.sum(grid <= 0)
+    M = (N_up - N_down) / grid.size
     return M
         
 
